@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: proof-gatekeeper-agent
+    env: node
+    plan: free
+    buildCommand: npm install && bash scripts/download-circuits.sh
+    startCommand: npm start
+    envVars:
+      - key: AGENT_GAMES_HMAC_SECRET
+        sync: false
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /health
+# WARNING: the free Render plan sleeps after 15 min idle and cold-starts in
+# ~30-60s, which can eat the 60s decision window. See README "Deploy".
+# Use the Starter ($7/mo, always-on) or a /health keep-alive ping.
